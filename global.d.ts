@@ -40,20 +40,38 @@ declare global {
       }) => Promise<{ code: number; msg: string; data?: any }>;
 
       click: (adInfo: { zoneId: number; publisherId: number }) => void;
+
+      log: (adInfo: {
+        zoneId: number;
+        publisherId: number;
+      }) => Promise<{ code: number; msg: string }>; // ✅ Added log method
     };
 
     // ✅ Correct placement for getRender under "interactive"
     interactive: {
+      init: (params: {
+        adParams: { version?: string; TG?: boolean };
+        adInfo: { zoneId: number; publisherId: number; eventId?: number };
+        userInfo: {
+          userId?: string;
+          firstName?: string;
+          lastName?: string;
+          userName?: string;
+          walletType?: string;
+          walletAddress?: string;
+        };
+      }) => Promise<{ code: number; msg: string }>;
+
       getRender: (params: {
         adInfo: { zoneId: number; publisherId: number };
         cb: {
-          adResourceLoad?: (e: boolean) => void; // ✅ Tracks if ad resources are loaded
-          adOpening?: (e: boolean) => void; // ✅ Logs when the ad starts opening
-          adOpened?: (e: string) => void; // ✅ Logs when the ad is fully opened
-          adTaskFinished?: (e: string) => void; // ✅ Logs when an ad task is completed
-          adClosing?: (e: string) => void; // ✅ Logs when the ad is closing
-          adClosed?: (e: string) => void; // ✅ Logs when the ad is fully closed
-          adClick?: (e: boolean) => void; // ✅ Logs when the ad is clicked
+          adResourceLoad?: (e: boolean) => void;
+          adOpening?: (e: boolean) => void;
+          adOpened?: (e: string) => void;
+          adTaskFinished?: (e: string) => void;
+          adClosing?: (e: string) => void;
+          adClosed?: (e: string) => void;
+          adClick?: (e: boolean) => void;
         };
       }) => void;
     };
